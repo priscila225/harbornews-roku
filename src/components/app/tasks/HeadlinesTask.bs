@@ -1,5 +1,6 @@
 import "pkg:/source/architecture/ObjectUtils.bs"
 import "pkg:/source/architecture/HttpUtils.bs"
+import "pkg:/source/app/RelativeTime.bs"
 
 ' Runs on the Task thread. Publishes { ok, articles } or { ok: false, error } in m.top.result.
 function execute() as void
@@ -21,7 +22,8 @@ function execute() as void
             articles.push({
                 id: item.id,
                 title: item.title,
-                summary: stringOrDefault(item.summary, "")
+                summary: stringOrDefault(item.summary, ""),
+                publishedAt: RelativeTime.secondsFromMillis(item.publishedAt)
             })
         end if
     end for

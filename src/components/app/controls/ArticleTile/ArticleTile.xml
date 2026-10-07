@@ -6,6 +6,7 @@
     <script type="text/brightscript" uri="ArticleTile.bs" />
     <children>
         <Label id="title" width="1180" height="40" font="font:MediumBoldSystemFont" />
-        <Label id="summary" translation="[0,44]" width="1180" height="48" font="font:SmallSystemFont" color="0xCCCCCCFF" />
+        <Label id="summary" translation="[0,44]" width="1180" height="36" font="font:SmallSystemFont" color="0xCCCCCCFF" />
+        <Label id="published" translation="[0,80]" width="600" height="20" font="font:SmallestSystemFont" color="0x999999FF" />
     </children>
 </component>

@@ -1,0 +1,33 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+
+namespace RelativeTime
+    const SECONDS_PER_MINUTE = 60
+    const SECONDS_PER_HOUR = 3600
+    const SECONDS_PER_DAY = 86400
+
+    ' Converts an epoch value in milliseconds to whole seconds; returns 0 for anything that is not a number.
+    function secondsFromMillis(millis as dynamic) as integer
+        if not isNumber(millis)
+            return 0
+        end if
+        return Int(millis / 1000)
+    end function
+
+    ' "just now", "5 min ago", "2 h ago" or "3 d ago". Timestamps in the future count as "just now".
+    function format(publishedAt as integer, now as integer) as string
+        if publishedAt <= 0
+            return ""
+        end if
+        elapsed = now - publishedAt
+        if elapsed < SECONDS_PER_MINUTE
+            return "just now"
+        end if
+        if elapsed < SECONDS_PER_HOUR
+            return Int(elapsed / SECONDS_PER_MINUTE).toStr() + " min ago"
+        end if
+        if elapsed < SECONDS_PER_DAY
+            return Int(elapsed / SECONDS_PER_HOUR).toStr() + " h ago"
+        end if
+        return Int(elapsed / SECONDS_PER_DAY).toStr() + " d ago"
+    end function
+end namespace
