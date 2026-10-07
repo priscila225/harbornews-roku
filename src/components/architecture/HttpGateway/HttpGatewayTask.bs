@@ -33,6 +33,12 @@ function startRequest(request as dynamic, port as object) as void
     if isAssocArray(request.headers)
         xfer.setHeaders(request.headers)
     end if
+    if isString(request.kind) and request.kind = "weather"
+        ' Weather must never come from a proxy cache.
+        xfer.addHeader("Cache-Control", "no-cache")
+        xfer.asyncGetToString()
+        return
+    end if
     if xfer.asyncGetToString()
         ' The transfer must be remembered by identity or its completion event cannot be matched.
         m.pending[xfer.getIdentity().toStr()] = { request: request, xfer: xfer }
