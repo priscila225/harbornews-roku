@@ -21,9 +21,18 @@ function execute() as void
             articles.push({
                 id: item.id,
                 title: item.title,
-                summary: stringOrDefault(item.summary, "")
+                summary: stringOrDefault(item.summary, ""),
+                author: stringOrDefault(item.author, ""),
+                words: wordCountOf(item.wordCount)
             })
         end if
     end for
     m.top.result = { ok: true, articles: articles }
+end function
+
+function wordCountOf(value as dynamic) as integer
+    if isNumber(value)
+        return Int(value)
+    end if
+    return 0
 end function
