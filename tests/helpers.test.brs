@@ -19,6 +19,19 @@ sub main()
     expectEqual("stringOrDefault falls back for invalid", stringOrDefault(invalid, "d"), "d")
     expectEqual("stringOrDefault falls back for numbers", stringOrDefault(5, "d"), "d")
 
+    ' relative time
+    expectEqual("a fresh story is just now", RelativeTime_format(1000, 1030), "just now")
+    expectEqual("exactly one minute", RelativeTime_format(1000, 1060), "1 min ago")
+    expectEqual("minutes round down", RelativeTime_format(1000, 1000 + 59 * 60 + 59), "59 min ago")
+    expectEqual("exactly one hour", RelativeTime_format(1000, 1000 + 3600), "1 h ago")
+    expectEqual("hours round down", RelativeTime_format(1000, 1000 + 23 * 3600 + 3599), "23 h ago")
+    expectEqual("exactly one day", RelativeTime_format(1000, 1000 + 86400), "1 d ago")
+    expectEqual("a future timestamp counts as just now", RelativeTime_format(2000, 1000), "just now")
+    expectEqual("a missing timestamp gives no text", RelativeTime_format(0, 1000), "")
+    expectEqual("millis become seconds", RelativeTime_secondsFromMillis(1700000000000), 1700000000)
+    expectEqual("a non-number becomes zero", RelativeTime_secondsFromMillis("x"), 0)
+    expectEqual("invalid becomes zero", RelativeTime_secondsFromMillis(invalid), 0)
+
     print "checks=" + m.checks.toStr() + " failures=" + m.failures.toStr()
 end sub
 
