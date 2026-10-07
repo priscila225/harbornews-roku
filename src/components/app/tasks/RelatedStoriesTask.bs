@@ -1,0 +1,27 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+import "pkg:/source/architecture/HttpUtils.bs"
+import "pkg:/source/app/ConfigManager.bs"
+
+' Runs on the Task thread. Fills the related list directly so the page does not have to copy the content.
+function execute() as void
+    params = m.top.params
+    url = params.apiBaseUrl + "/stations/" + params.stationId + "/articles/" + params.articleId + "/related"
+    json = parseJson(fetchString(url, 10000))
+    limit = ConfigManager.getRelatedCount()
+    content = createObject("roSGNode", "ContentNode")
+    shown = 0
+    if json.items.count() > 0
+        for each item in json.items
+            if shown < limit and isAssocArray(item) and isString(item.id) and isString(item.title)
+                node = createObject("roSGNode", "ContentNode")
+                node.id = item.id
+                node.title = item.title
+                node.description = stringOrDefault(item.summary, "")
+                content.appendChild(node)
+                shown = shown + 1
+            end if
+        end for
+    end if
+    params.relatedList.content = content
+    m.top.result = { ok: true, count: shown }
+end function

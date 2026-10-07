@@ -1,0 +1,25 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+import "pkg:/components/app/pages/ArticleDetailPage/usecases/GetArticleDetail.bs"
+
+' relatedList is the page's list node; the related task fills it directly.
+function load(articleId as string, relatedList as object) as void
+    m.top.state = "loading"
+    GetArticleDetail.execute(m.global.config, articleId, "onDetailLoaded")
+    GetArticleDetail.executeRelated(m.global.config, articleId, relatedList, "onRelatedLoaded")
+end function
+
+function onDetailLoaded(event as object) as void
+    result = event.getData()
+    if isAssocArray(result) and isAssocArray(result.detail)
+        m.top.title = result.detail.title
+        m.top.body = result.detail.body
+        m.top.heroUrl = result.detail.heroUrl
+    end if
+end function
+
+function onRelatedStoriesLoaded(event as object) as void
+    result = event.getData()
+    if isAssocArray(result) and result.ok = true
+        m.top.state = "ready"
+    end if
+end function

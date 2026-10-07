@@ -20,4 +20,14 @@ namespace ConfigManager
         defaults.append(parsed)
         return defaults
     end function
+
+    ' How many related stories the article page shows.
+    function getRelatedCount() as integer
+        return relatedCountFromJson(readAsciiFile("pkg:/config/article.json"))
+    end function
+
+    function relatedCountFromJson(raw as string) as integer
+        cfg = parseJson(raw)
+        return cfg.relatedCount
+    end function
 end namespace

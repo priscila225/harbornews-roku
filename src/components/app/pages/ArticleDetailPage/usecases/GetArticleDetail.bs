@@ -1,0 +1,21 @@
+import "pkg:/source/architecture/StartTask.bs"
+
+namespace GetArticleDetail
+    ' Starts the article task. The callback is resolved in the calling component.
+    function execute(config as object, articleId as string, callbackName as string) as object
+        return startTask("ArticleDetailTask", {
+            apiBaseUrl: config.apiBaseUrl,
+            stationId: config.stationId,
+            articleId: articleId
+        }, callbackName)
+    end function
+
+    function executeRelated(config as object, articleId as string, relatedList as object, callbackName as string) as object
+        return startTask("RelatedStoriesTask", {
+            apiBaseUrl: config.apiBaseUrl,
+            stationId: config.stationId,
+            articleId: articleId,
+            relatedList: relatedList
+        }, callbackName)
+    end function
+end namespace

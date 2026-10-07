@@ -1,0 +1,24 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+
+namespace ArticleDetailModel
+    ' Picks the image to show at the top of the story, or an empty string when there is none.
+    function pickHeroImage(images as dynamic) as dynamic
+        if isArray(images) and images.count() > 0
+            return images[0]
+        end if
+        return ""
+    end function
+
+    ' Shapes the article payload into the fields the page renders.
+    function fromJson(json as dynamic) as object
+        detail = { title: "", body: "", heroUrl: "" }
+        if not isAssocArray(json)
+            return detail
+        end if
+        detail.title = stringOrDefault(json.title, "")
+        detail.body = stringOrDefault(json.body, "")
+        hero = pickHeroImage(json.images)
+        detail.heroUrl = hero.url
+        return detail
+    end function
+end namespace

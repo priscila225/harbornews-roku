@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="ArticleDetailViewModel" extends="Node">
+    <interface>
+        <field id="state" type="string" value="idle" />
+        <field id="title" type="string" />
+        <field id="body" type="string" />
+        <field id="heroUrl" type="string" />
+        <function name="load" />
+    </interface>
+    <script type="text/brightscript" uri="ArticleDetailViewModel.bs" />
+</component>
