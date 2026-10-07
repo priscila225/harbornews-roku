@@ -7,8 +7,8 @@
   "plugins": ["@rokucommunity/bslint"],
   "lintConfig": "bslint.jsonc",
   "diagnosticSeverityOverrides": {
-    "BSLINT3005": "warn",
-    "BSLINT3008": "warn",
-    "BSLINT3009": "warn"
+    "LINT3005": "warn",
+    "LINT3008": "warn",
+    "LINT3009": "warn"
   }
 }
