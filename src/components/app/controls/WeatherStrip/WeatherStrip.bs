@@ -1,7 +1,11 @@
 import "pkg:/source/architecture/ObjectUtils.bs"
+import "pkg:/source/app/WeatherFormat.bs"
 
 function init() as void
     m.label = m.top.findNode("label")
+    m.alertBadge = m.top.findNode("alertBadge")
+    m.fresh = m.top.findNode("fresh")
+    m.top.setFocus(true)
     m.global.observeFieldScoped("weatherConditions", "onGlobalWeather")
     m.top.conditions = m.global.weatherConditions
 end function
@@ -12,6 +16,11 @@ end function
 
 function onConditionsChanged() as void
     conditions = m.top.conditions
+    if isAssocArray(conditions)
+        m.top.temperature = conditions.tempF
+        m.top.alerts = conditions.alerts
+        m.top.lastUpdated = stringOrDefault(conditions.updatedAt, "")
+    end if
     if isAssocArray(conditions) and isNumber(conditions.temperatureF)
         m.label.text = conditions.temperatureF.toStr() + " F  " + stringOrDefault(conditions.summary, "")
     else
@@ -22,4 +31,18 @@ end function
 ' The strip observes a node that outlives it, so it must let go when the page is destroyed.
 function onDestroy() as void
     m.global.unobserveFieldScoped("weatherConditions")
+end function
+
+function onTemperatureChanged() as void
+    m.label.text = m.top.temperature.toStr() + " F"
+end function
+
+function onAlertsChanged() as void
+    alerts = m.top.alerts
+    m.alertBadge.text = WeatherFormat.alertText(alerts.count())
+    m.alertBadge.visible = m.alertBadge.text <> ""
+end function
+
+function onLastUpdatedChanged() as void
+    m.fresh.visible = true
 end function

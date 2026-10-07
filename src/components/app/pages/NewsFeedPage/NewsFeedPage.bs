@@ -36,3 +36,21 @@ function onDestroy() as void
     m.viewModel.unobserveFieldScoped("items")
     m.viewModel.unobserveFieldScoped("openArticleEvent")
 end function
+
+' Pressing * refreshes the weather on demand.
+function onKeyEvent(key as string, press as boolean) as boolean
+    if press and key = "options"
+        refreshWeather()
+        return true
+    end if
+    return false
+end function
+
+function refreshWeather() as void
+    config = m.global.config
+    task = createObject("roSGNode", "WeatherTask")
+    task.params = { apiBaseUrl: config.apiBaseUrl, stationId: config.stationId, scene: m.top.getScene() }
+    task.control = "run"
+    conditions = task.result
+    m.weatherStrip.conditions = conditions
+end function
