@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="WeatherStrip" extends="ControlBase">
+    <interface>
+        <field id="conditions" type="assocarray" onChange="onConditionsChanged" />
+    </interface>
+    <script type="text/brightscript" uri="WeatherStrip.bs" />
+    <children>
+        <Label id="label" width="600" height="40" font="font:SmallBoldSystemFont" text="Weather unavailable" />
+    </children>
+</component>

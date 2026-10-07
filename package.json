@@ -1,0 +1,15 @@
+{
+  "name": "harbornews-roku",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Harbor News channel for Roku",
+  "scripts": {
+    "build": "bsc --project bsconfig.json",
+    "test": "bash scripts/run-tests.sh"
+  },
+  "devDependencies": {
+    "@rokucommunity/bslint": "^0.8.46",
+    "brighterscript": "^0.73.5",
+    "brs-node": "^2.6.0"
+  }
+}

@@ -1,0 +1,3 @@
+' Controls override onDestroy to release observers they placed on long-lived nodes.
+function onDestroy() as void
+end function

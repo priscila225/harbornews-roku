@@ -1,0 +1,25 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+
+function init() as void
+    m.label = m.top.findNode("label")
+    m.global.observeFieldScoped("weatherConditions", "onGlobalWeather")
+    m.top.conditions = m.global.weatherConditions
+end function
+
+function onGlobalWeather(event as object) as void
+    m.top.conditions = event.getData()
+end function
+
+function onConditionsChanged() as void
+    conditions = m.top.conditions
+    if isAssocArray(conditions) and isNumber(conditions.temperatureF)
+        m.label.text = conditions.temperatureF.toStr() + " F  " + stringOrDefault(conditions.summary, "")
+    else
+        m.label.text = "Weather unavailable"
+    end if
+end function
+
+' The strip observes a node that outlives it, so it must let go when the page is destroyed.
+function onDestroy() as void
+    m.global.unobserveFieldScoped("weatherConditions")
+end function

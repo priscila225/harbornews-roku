@@ -1,0 +1,57 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+
+' Long-lived task: waits on one message port for new requests and for transfer completions.
+function init() as void
+    m.top.functionName = "runLoop"
+end function
+
+function runLoop() as void
+    port = createObject("roMessagePort")
+    m.top.observeField("request", port)
+    m.pending = {}
+    while true
+        msg = wait(0, port)
+        msgType = type(msg)
+        if msgType = "roSGNodeEvent"
+            startRequest(msg.getData(), port)
+        else if msgType = "roUrlEvent"
+            finishRequest(msg)
+        end if
+    end while
+end function
+
+function startRequest(request as dynamic, port as object) as void
+    if not isAssocArray(request)
+        return
+    end if
+    xfer = createObject("roUrlTransfer")
+    xfer.setMessagePort(port)
+    xfer.setUrl(request.url)
+    xfer.setCertificatesFile("common:/certs/ca-bundle.crt")
+    xfer.initClientCertificates()
+    xfer.enableEncodings(true)
+    if isAssocArray(request.headers)
+        xfer.setHeaders(request.headers)
+    end if
+    if xfer.asyncGetToString()
+        ' The transfer must be remembered by identity or its completion event cannot be matched.
+        m.pending[xfer.getIdentity().toStr()] = { request: request, xfer: xfer }
+    else
+        m.top.response = { id: request.id, status: 0, body: "", failure: "request not started" }
+    end if
+end function
+
+function finishRequest(event as object) as void
+    key = event.getSourceIdentity().toStr()
+    entry = m.pending[key]
+    if entry = invalid
+        return
+    end if
+    m.pending.delete(key)
+    m.top.response = {
+        id: entry.request.id,
+        status: event.getResponseCode(),
+        body: event.getString(),
+        failure: event.getFailureReason()
+    }
+end function

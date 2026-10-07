@@ -1,0 +1,23 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+
+namespace ConfigManager
+    ' Reads the bundled configuration. Falls back to defaults when the file is missing or malformed.
+    function load() as object
+        defaults = {
+            apiBaseUrl: "https://api.harbornews.example",
+            stationId: "harbor-1",
+            headlinesLimit: 20,
+            weatherRefreshSeconds: 600
+        }
+        raw = readAsciiFile("pkg:/config/app.json")
+        if raw = ""
+            return defaults
+        end if
+        parsed = parseJson(raw)
+        if not isAssocArray(parsed)
+            return defaults
+        end if
+        defaults.append(parsed)
+        return defaults
+    end function
+end namespace

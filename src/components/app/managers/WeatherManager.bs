@@ -1,0 +1,42 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+
+function start() as void
+    m.global.httpGateway.observeFieldScoped("response", "onHttpResponse")
+    requestWeather()
+    m.timer = createObject("roSGNode", "Timer")
+    m.timer.duration = m.global.config.weatherRefreshSeconds
+    m.timer.repeat = true
+    m.timer.observeFieldScoped("fire", "onTimer")
+    m.timer.control = "start"
+end function
+
+function onTimer() as void
+    requestWeather()
+end function
+
+function requestWeather() as void
+    config = m.global.config
+    m.global.httpGateway.callFunc("submit", {
+        id: "weather",
+        url: config.apiBaseUrl + "/stations/" + config.stationId + "/weather/current"
+    })
+end function
+
+function onHttpResponse(event as object) as void
+    response = event.getData()
+    if not isAssocArray(response) or not isString(response.id)
+        return
+    end if
+    if response.id <> "weather" or response.status <> 200
+        return
+    end if
+    json = parseJson(response.body)
+    if not isAssocArray(json) or not isNumber(json.tempF)
+        return
+    end if
+    m.global.weatherConditions = {
+        temperatureF: Int(json.tempF),
+        summary: stringOrDefault(json.summary, ""),
+        updatedAt: json.updatedAt
+    }
+end function

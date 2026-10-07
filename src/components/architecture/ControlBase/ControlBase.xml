@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="ControlBase" extends="Group">
+    <interface>
+        <function name="onDestroy" />
+    </interface>
+    <script type="text/brightscript" uri="ControlBase.bs" />
+</component>

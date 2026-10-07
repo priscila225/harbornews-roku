@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="WeatherManager" extends="Node">
+    <interface>
+        <function name="start" />
+    </interface>
+    <script type="text/brightscript" uri="WeatherManager.bs" />
+</component>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="NewsFeedPage" extends="PageBase">
+    <script type="text/brightscript" uri="NewsFeedPage.bs" />
+    <children>
+        <WeatherStrip id="weatherStrip" translation="[40,20]" />
+        <MarkupList
+            id="list"
+            translation="[40,100]"
+            itemComponentName="ArticleTile"
+            itemSize="[1200,100]"
+            itemSpacing="[0,8]"
+            numRows="5" />
+    </children>
+</component>

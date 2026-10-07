@@ -1,0 +1,38 @@
+import "pkg:/source/architecture/Logger.bs"
+import "pkg:/source/architecture/ObjectUtils.bs"
+import "pkg:/components/app/pages/NewsFeedPage/model/NewsFeedModel.bs"
+
+' The page only wires fields and observers; loading and selection logic lives in the view model.
+function init() as void
+    m.list = m.top.findNode("list")
+    m.weatherStrip = m.top.findNode("weatherStrip")
+    m.viewModel = createObject("roSGNode", "NewsFeedViewModel")
+    m.viewModel.observeFieldScoped("items", "onItemsChanged")
+    m.viewModel.observeFieldScoped("openArticleEvent", "onOpenArticle")
+    m.list.observeFieldScoped("itemSelected", "onItemSelected")
+    m.viewModel.callFunc("load")
+end function
+
+function onItemsChanged(event as object) as void
+    m.list.content = NewsFeedModel.toContent(event.getData())
+    m.list.setFocus(true)
+end function
+
+function onItemSelected(event as object) as void
+    m.viewModel.callFunc("selectItem", event.getData())
+end function
+
+function onOpenArticle(event as object) as void
+    article = event.getData()
+    Logger.info("Open article requested: " + stringOrDefault(article.id, "?"))
+end function
+
+function onShow() as void
+    m.list.setFocus(true)
+end function
+
+function onDestroy() as void
+    m.weatherStrip.callFunc("onDestroy")
+    m.viewModel.unobserveFieldScoped("items")
+    m.viewModel.unobserveFieldScoped("openArticleEvent")
+end function

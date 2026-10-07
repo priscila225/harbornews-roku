@@ -1,0 +1,14 @@
+function init() as void
+    m.task = createObject("roSGNode", "HttpGatewayTask")
+    m.task.observeFieldScoped("response", "onTaskResponse")
+    m.task.control = "run"
+end function
+
+' request: { id: string, url: string, headers: assocarray (optional) }
+function submit(request as object) as void
+    m.task.request = request
+end function
+
+function onTaskResponse(event as object) as void
+    m.top.response = event.getData()
+end function

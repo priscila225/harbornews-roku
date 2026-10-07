@@ -1,0 +1,14 @@
+{
+  "rootDir": "src",
+  "files": ["manifest", "source/**/*", "components/**/*", "config/**/*", "images/**/*"],
+  "stagingDir": "build",
+  "createPackage": false,
+  "autoImportComponentScript": false,
+  "plugins": ["@rokucommunity/bslint"],
+  "lintConfig": "bslint.jsonc",
+  "diagnosticSeverityOverrides": {
+    "BSLINT3005": "warn",
+    "BSLINT3008": "warn",
+    "BSLINT3009": "warn"
+  }
+}

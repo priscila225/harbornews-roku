@@ -1,0 +1,19 @@
+' Blocking GET for use inside Task threads only. Returns an empty string on any failure.
+function fetchString(url as string, timeoutMs as integer) as string
+    port = createObject("roMessagePort")
+    xfer = createObject("roUrlTransfer")
+    xfer.setMessagePort(port)
+    xfer.setUrl(url)
+    xfer.setCertificatesFile("common:/certs/ca-bundle.crt")
+    xfer.initClientCertificates()
+    xfer.enableEncodings(true)
+    if not xfer.asyncGetToString()
+        return ""
+    end if
+    msg = wait(timeoutMs, port)
+    if type(msg) = "roUrlEvent" and msg.getResponseCode() = 200
+        return msg.getString()
+    end if
+    xfer.asyncCancel()
+    return ""
+end function

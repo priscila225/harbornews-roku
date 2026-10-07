@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="PageBase" extends="ControlBase">
+    <interface>
+        <field id="params" type="assocarray" />
+        <function name="onShow" />
+        <function name="onHide" />
+        <function name="handleBackPress" />
+    </interface>
+    <script type="text/brightscript" uri="PageBase.bs" />
+</component>

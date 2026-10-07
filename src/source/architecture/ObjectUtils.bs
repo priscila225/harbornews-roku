@@ -1,0 +1,31 @@
+' Small type-check helpers. BrightScript raises a type mismatch when invalid is compared to a
+' non-invalid value, so payload fields are checked with these before use.
+
+function isValid(value as dynamic) as boolean
+    return type(value) <> "<uninitialized>" and value <> invalid
+end function
+
+function isString(value as dynamic) as boolean
+    valueType = type(value)
+    return valueType = "String" or valueType = "roString"
+end function
+
+function isNumber(value as dynamic) as boolean
+    valueType = type(value)
+    return valueType = "Integer" or valueType = "roInt" or valueType = "Float" or valueType = "roFloat" or valueType = "Double" or valueType = "roDouble" or valueType = "LongInteger"
+end function
+
+function isArray(value as dynamic) as boolean
+    return type(value) = "roArray"
+end function
+
+function isAssocArray(value as dynamic) as boolean
+    return type(value) = "roAssociativeArray"
+end function
+
+function stringOrDefault(value as dynamic, fallback as string) as string
+    if isString(value)
+        return value
+    end if
+    return fallback
+end function

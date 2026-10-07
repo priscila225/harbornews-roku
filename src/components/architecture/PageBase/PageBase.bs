@@ -1,0 +1,9 @@
+function onShow() as void
+end function
+
+function onHide() as void
+end function
+
+function handleBackPress() as boolean
+    return false
+end function

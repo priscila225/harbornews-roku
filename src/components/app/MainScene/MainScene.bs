@@ -1,0 +1,71 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+import "pkg:/source/architecture/Logger.bs"
+
+function init() as void
+    m.pageStack = []
+    m.httpGateway = createObject("roSGNode", "HttpGateway")
+    m.global.addFields({ httpGateway: m.httpGateway })
+    m.weatherManager = createObject("roSGNode", "WeatherManager")
+    m.weatherManager.callFunc("start")
+    navigateTo({ page: "NewsFeedPage", params: {}, mode: "push" })
+end function
+
+function onNavigateToPage(event as object) as void
+    navigateTo(event.getData())
+end function
+
+' request: { page: string, params: assocarray, mode: "push" | "back" }
+function navigateTo(request as object) as void
+    mode = stringOrDefault(request.mode, "push")
+    if mode = "back"
+        goBack()
+        return
+    end if
+    page = createObject("roSGNode", request.page)
+    if page = invalid
+        Logger.error("Unknown page " + stringOrDefault(request.page, "?"))
+        return
+    end if
+    if isAssocArray(request.params)
+        page.params = request.params
+    end if
+    if m.pageStack.count() > 0
+        hidePage(m.pageStack.peek())
+    end if
+    m.top.appendChild(page)
+    m.pageStack.push(page)
+    page.callFunc("onShow")
+    page.setFocus(true)
+end function
+
+function goBack() as void
+    if m.pageStack.count() < 2
+        return
+    end if
+    page = m.pageStack.pop()
+    page.callFunc("onDestroy")
+    m.top.removeChild(page)
+    previous = m.pageStack.peek()
+    previous.visible = true
+    previous.callFunc("onShow")
+    previous.setFocus(true)
+end function
+
+function hidePage(page as object) as void
+    page.callFunc("onHide")
+    page.visible = false
+end function
+
+function onKeyEvent(key as string, press as boolean) as boolean
+    if not press or key <> "back"
+        return false
+    end if
+    if m.pageStack.count() > 0 and m.pageStack.peek().callFunc("handleBackPress")
+        return true
+    end if
+    if m.pageStack.count() > 1
+        goBack()
+        return true
+    end if
+    return false
+end function

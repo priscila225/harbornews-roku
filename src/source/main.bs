@@ -1,0 +1,25 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+import "pkg:/source/app/ConfigManager.bs"
+
+function main(args as object) as void
+    screen = createObject("roSGScreen")
+    port = createObject("roMessagePort")
+    screen.setMessagePort(port)
+
+    ' Global state must exist before the scene is created because components read it in init().
+    screen.getGlobalNode().addFields({
+        config: ConfigManager.load(),
+        weatherConditions: {}
+    })
+
+    scene = screen.createScene("MainScene")
+    scene.launchArgs = args
+    screen.show()
+
+    while true
+        msg = wait(0, port)
+        if type(msg) = "roSGScreenEvent" and msg.isScreenClosed()
+            return
+        end if
+    end while
+end function

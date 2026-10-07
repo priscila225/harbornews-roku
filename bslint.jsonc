@@ -1,0 +1,21 @@
+{
+  // Lint rules for the channel. Style rules start as warnings; strictness rules fail the build.
+  "rules": {
+    "block-if-style": "no-then",
+    "named-function-style": "no-sub",
+    "anon-function-style": "no-sub",
+    "aa-comma-style": "no-dangling",
+    "condition-style": "no-group",
+    "no-print": "off",
+    "no-todo": "off",
+    "no-stop": "error",
+    "eol-last": "always",
+    "type-annotations": "all",
+    "assign-all-paths": "warn",
+    "unsafe-iterators": "error",
+    "unreachable-code": "warn",
+    "case-sensitivity": "warn",
+    "unused-variable": "warn",
+    "consistent-return": "error"
+  }
+}

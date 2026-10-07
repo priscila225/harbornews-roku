@@ -1,0 +1,12 @@
+import "pkg:/source/architecture/StartTask.bs"
+
+namespace GetHeadlines
+    ' Starts the headlines task. The callback is resolved in the calling component.
+    function execute(config as object, callbackName as string) as object
+        return startTask("HeadlinesTask", {
+            apiBaseUrl: config.apiBaseUrl,
+            stationId: config.stationId,
+            limit: config.headlinesLimit
+        }, callbackName)
+    end function
+end namespace

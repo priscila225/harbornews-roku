@@ -1,0 +1,27 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+import "pkg:/components/app/pages/NewsFeedPage/usecases/GetHeadlines.bs"
+
+function load() as void
+    m.top.state = "loading"
+    GetHeadlines.execute(m.global.config, "onHeadlinesLoaded")
+end function
+
+function onHeadlinesLoaded(event as object) as void
+    result = event.getData()
+    if isAssocArray(result)
+        if isArray(result.articles)
+            m.top.items = result.articles
+            m.top.state = "ready"
+            return
+        end if
+    end if
+    m.top.state = "error"
+end function
+
+function selectItem(index as integer) as void
+    items = m.top.items
+    if index < 0 or index >= items.count()
+        return
+    end if
+    m.top.openArticleEvent = { id: items[index].id }
+end function

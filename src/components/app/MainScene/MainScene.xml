@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="MainScene" extends="Scene">
+    <interface>
+        <field id="launchArgs" type="assocarray" />
+        <field id="navigateToPage" type="assocarray" alwaysNotify="true" onChange="onNavigateToPage" />
+    </interface>
+    <script type="text/brightscript" uri="MainScene.bs" />
+    <children>
+        <Rectangle id="background" color="0x0B3C5DFF" width="1280" height="720" />
+    </children>
+</component>

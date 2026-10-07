@@ -1,0 +1,9 @@
+namespace Logger
+    function info(message as string) as void
+        print "[HarborNews] " + message
+    end function
+
+    function error(message as string) as void
+        print "[HarborNews][ERROR] " + message
+    end function
+end namespace

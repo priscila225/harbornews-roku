@@ -1,0 +1,13 @@
+function init() as void
+    m.titleLabel = m.top.findNode("title")
+    m.summaryLabel = m.top.findNode("summary")
+end function
+
+function onContentChanged() as void
+    content = m.top.itemContent
+    if content = invalid
+        return
+    end if
+    m.titleLabel.text = content.title
+    m.summaryLabel.text = content.description
+end function

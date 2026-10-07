@@ -1,0 +1,27 @@
+' Creates a Task, keeps it alive until it finishes, and routes its result to the caller's
+' callback. Must be called from the component that owns the callback function: the callback
+' name is resolved in that component's scope.
+function startTask(taskName as string, params as object, callbackName as string) as object
+    if m.runningTasks = invalid
+        m.runningTasks = {}
+        m.startTaskCounter = 0
+    end if
+    m.startTaskCounter = m.startTaskCounter + 1
+    id = "task" + m.startTaskCounter.toStr()
+    task = createObject("roSGNode", taskName)
+    task.id = id
+    task.params = params
+    task.observeFieldScoped("result", callbackName)
+    task.observeFieldScoped("state", "onStartTaskStateChange")
+    m.runningTasks[id] = task
+    task.control = "run"
+    return task
+end function
+
+function onStartTaskStateChange(event as object) as void
+    task = event.getRoSGNode()
+    state = event.getData()
+    if state = "done" or state = "stop"
+        m.runningTasks.delete(task.id)
+    end if
+end function

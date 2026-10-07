@@ -1,0 +1,6 @@
+{
+  "apiBaseUrl": "https://api.harbornews.example",
+  "stationId": "harbor-1",
+  "headlinesLimit": 20,
+  "weatherRefreshSeconds": 600
+}

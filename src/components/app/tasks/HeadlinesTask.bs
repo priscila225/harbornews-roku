@@ -1,0 +1,29 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+import "pkg:/source/architecture/HttpUtils.bs"
+
+' Runs on the Task thread. Publishes { ok, articles } or { ok: false, error } in m.top.result.
+function execute() as void
+    params = m.top.params
+    url = params.apiBaseUrl + "/stations/" + params.stationId + "/headlines"
+    body = fetchString(url, 10000)
+    if body = ""
+        m.top.result = { ok: false, error: "no response" }
+        return
+    end if
+    json = parseJson(body)
+    if not isArray(json)
+        m.top.result = { ok: false, error: "unexpected payload" }
+        return
+    end if
+    articles = []
+    for each item in json
+        if isAssocArray(item) and isString(item.id) and isString(item.title)
+            articles.push({
+                id: item.id,
+                title: item.title,
+                summary: stringOrDefault(item.summary, "")
+            })
+        end if
+    end for
+    m.top.result = { ok: true, articles: articles }
+end function

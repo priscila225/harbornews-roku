@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="NewsFeedViewModel" extends="Node">
+    <interface>
+        <field id="items" type="array" />
+        <field id="state" type="string" value="idle" />
+        <field id="openArticleEvent" type="assocarray" alwaysNotify="true" />
+        <function name="load" />
+        <function name="selectItem" />
+    </interface>
+    <script type="text/brightscript" uri="NewsFeedViewModel.bs" />
+</component>

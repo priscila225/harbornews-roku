@@ -1,0 +1,19 @@
+function onKeyEvent(key as string, press as boolean) as boolean
+    if not press
+        return false
+    end if
+    count = m.top.getChildCount()
+    index = m.top.focusIndex
+    handled = false
+    if key = m.top.nextKey and index < count - 1
+        m.top.focusIndex = index + 1
+        handled = true
+    else if key = m.top.prevKey and index > 0
+        m.top.focusIndex = index - 1
+        handled = true
+    end if
+    if handled
+        m.top.getChild(m.top.focusIndex).setFocus(true)
+    end if
+    return handled
+end function

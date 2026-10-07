@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="FocusRow" extends="ControlBase">
+    <interface>
+        <field id="focusIndex" type="integer" value="0" />
+        <field id="nextKey" type="string" value="right" />
+        <field id="prevKey" type="string" value="left" />
+    </interface>
+    <script type="text/brightscript" uri="FocusRow.bs" />
+</component>

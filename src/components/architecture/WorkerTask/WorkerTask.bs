@@ -1,0 +1,8 @@
+' Subclasses define execute(), run on the Task thread, and publish their outcome in m.top.result.
+function init() as void
+    m.top.functionName = "execute"
+end function
+
+function execute() as void
+    m.top.result = {}
+end function
