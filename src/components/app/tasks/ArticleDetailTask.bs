@@ -1,0 +1,15 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+import "pkg:/source/architecture/HttpUtils.bs"
+import "pkg:/components/app/pages/ArticleDetailPage/model/ArticleDetailModel.bs"
+
+' Runs on the Task thread. Publishes { ok, detail } or { ok: false, error } in m.top.result.
+function execute() as void
+    params = m.top.params
+    url = params.apiBaseUrl + "/stations/" + params.stationId + "/articles/" + params.articleId
+    json = parseJson(fetchString(url, 10000))
+    if not isAssocArray(json)
+        m.top.result = { ok: false, error: "no article" }
+        return
+    end if
+    m.top.result = { ok: true, detail: ArticleDetailModel.fromJson(json) }
+end function

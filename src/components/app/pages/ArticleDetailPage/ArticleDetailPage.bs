@@ -1,0 +1,61 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+
+' The page only wires fields and observers; loading logic lives in the view model.
+function init() as void
+    m.title = m.top.findNode("title")
+    m.body = m.top.findNode("body")
+    m.temperature = m.top.findNode("temperature")
+    m.spinner = m.top.findNode("spinner")
+    m.related = m.top.findNode("related")
+    m.weatherStrip = m.top.findNode("weatherStrip")
+    m.vm = createObject("roSGNode", "ArticleDetailViewModel")
+    m.vm.observeFieldScoped("title", "onTitleChanged")
+    m.vm.observeFieldScoped("body", "onBodyChanged")
+    m.vm.observeFieldScoped("state", "onStateChanged")
+    m.top.observeFieldScoped("params", "onParamsChanged")
+    m.global.observeFieldScoped("weatherConditions", "onWeatherChanged")
+end function
+
+function onParamsChanged() as void
+    if isAssocArray(m.top.params) and isString(m.top.params.articleId)
+        m.top.articleId = m.top.params.articleId
+    end if
+end function
+
+function onArticleIdChanged() as void
+    m.vm.callFunc("load", m.top.articleId, m.related)
+end function
+
+function onTitleChanged(event as object) as void
+    m.title.text = event.getData()
+end function
+
+function onBodyChanged(event as object) as void
+    m.body.text = event.getData()
+end function
+
+function onStateChanged(event as object) as void
+    m.spinner.visible = event.getData() <> "ready"
+end function
+
+function onWeatherChanged(event as object) as void
+    conditions = event.getData()
+    if isAssocArray(conditions) and isNumber(conditions.temperatureF)
+        m.temperature.text = "Now " + conditions.temperatureF.toStr() + " F"
+    end if
+end function
+
+' Refresh the story whenever the page comes back to the front.
+function onShow() as void
+    if isString(m.top.articleId) and m.top.articleId <> ""
+        m.top.articleId = m.top.articleId
+    end if
+    m.related.setFocus(true)
+end function
+
+function onDestroy() as void
+    m.weatherStrip.callFunc("onDestroy")
+    m.vm.unobserveFieldScoped("title")
+    m.vm.unobserveFieldScoped("body")
+    m.vm.unobserveFieldScoped("state")
+end function

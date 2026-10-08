@@ -1,4 +1,3 @@
-import "pkg:/source/architecture/Logger.bs"
 import "pkg:/source/architecture/ObjectUtils.bs"
 import "pkg:/components/app/pages/NewsFeedPage/model/NewsFeedModel.bs"
 
@@ -24,7 +23,7 @@ end function
 
 function onOpenArticle(event as object) as void
     article = event.getData()
-    Logger.info("Open article requested: " + stringOrDefault(article.id, "?"))
+    m.top.getScene().navigateToPage = { page: "ArticleDetailPage", params: { articleId: article.id }, mode: "push" }
 end function
 
 function onShow() as void

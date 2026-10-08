@@ -19,6 +19,17 @@ sub main()
     expectEqual("stringOrDefault falls back for invalid", stringOrDefault(invalid, "d"), "d")
     expectEqual("stringOrDefault falls back for numbers", stringOrDefault(5, "d"), "d")
 
+    ' article model and configuration
+    cfg = ConfigManager_relatedCountFromJson("{""relatedCount"": 3}")
+    expectEqual("related count is read from the config", cfg, 3)
+    withImage = ArticleDetailModel_fromJson({ title: "Harbor reopens", body: "Ferries run", images: [{ url: "https://img.example/1.jpg" }] })
+    expectEqual("title is kept", withImage.title, "Harbor reopens")
+    expectEqual("hero url comes from the first image", withImage.heroUrl, "https://img.example/1.jpg")
+    expectEqual("pickHeroImage returns the first image", ArticleDetailModel_pickHeroImage([{ url: "a" }, { url: "b" }]).url, "a")
+    notAnArticle = ArticleDetailModel_fromJson(invalid)
+    expectEqual("a missing payload gives an empty title", notAnArticle.title, "")
+    expectEqual("a missing payload gives an empty hero url", notAnArticle.heroUrl, "")
+
     print "checks=" + m.checks.toStr() + " failures=" + m.failures.toStr()
 end sub
 
