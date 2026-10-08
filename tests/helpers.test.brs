@@ -19,6 +19,11 @@ sub main()
     expectEqual("stringOrDefault falls back for invalid", stringOrDefault(invalid, "d"), "d")
     expectEqual("stringOrDefault falls back for numbers", stringOrDefault(5, "d"), "d")
 
+    expectEqual("a named author gets a by line", buildByline({ author: "Sam Rivera" }), "By Sam Rivera")
+    expectEqual("no author falls back to the newsroom", buildByline({ author: "" }), "Harbor News staff")
+    expectEqual("a short story reads in one minute", estimateReadTime({ words: 120 }), "1 min read")
+    expectEqual("a 650 word story reads in four minutes", estimateReadTime({ words: 650 }), "4 min read")
+
     print "checks=" + m.checks.toStr() + " failures=" + m.failures.toStr()
 end sub
 

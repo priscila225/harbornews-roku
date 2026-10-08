@@ -15,6 +15,7 @@ end function
 
 function onItemsChanged(event as object) as void
     m.list.content = NewsFeedModel.toContent(event.getData())
+    decorateItems(m.list.content, event.getData())
     m.list.setFocus(true)
 end function
 
@@ -35,4 +36,25 @@ function onDestroy() as void
     m.weatherStrip.callFunc("onDestroy")
     m.viewModel.unobserveFieldScoped("items")
     m.viewModel.unobserveFieldScoped("openArticleEvent")
+end function
+
+sub decorateItems(content as object, articles as object)
+    for index = 0 to articles.count() - 1
+        node = content.getChild(index)
+        if node <> invalid then
+            node.addFields({ byline: buildByline(articles[index]), readTime: estimateReadTime(articles[index]) })
+        end if
+    end for
+end sub
+
+function buildByline(article as object) as string
+    if article.author = "" then
+        return "Harbor News staff"
+    end if
+    return "By " + article.author
+end function
+
+function estimateReadTime(article as object) as string
+    minutes = Int(article.words / 200) + 1
+    return minutes.toStr() + " min read"
 end function
