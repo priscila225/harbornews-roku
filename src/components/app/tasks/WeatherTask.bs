@@ -1,0 +1,21 @@
+import "pkg:/source/architecture/ObjectUtils.bs"
+import "pkg:/source/architecture/HttpUtils.bs"
+
+' Runs on the Task thread. Publishes the reading in m.top.result and tells the user it was refreshed.
+function execute() as void
+    params = m.top.params
+    url = params.apiBaseUrl + "/stations/" + params.stationId + "/weather/current"
+    json = parseJson(fetchString(url, 10000))
+    if not isAssocArray(json) or not isNumber(json.tempF)
+        m.top.result = { ok: false }
+        return
+    end if
+    params.scene.callFunc("showToast", { text: "Weather updated" })
+    m.top.result = {
+        ok: true,
+        tempF: json.tempF,
+        summary: stringOrDefault(json.summary, ""),
+        alerts: json.alerts,
+        updatedAt: stringOrDefault(json.updatedAt, "")
+    }
+end function

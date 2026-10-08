@@ -19,6 +19,10 @@ sub main()
     expectEqual("stringOrDefault falls back for invalid", stringOrDefault(invalid, "d"), "d")
     expectEqual("stringOrDefault falls back for numbers", stringOrDefault(5, "d"), "d")
 
+    expectEqual("no alerts gives no badge", WeatherFormat_alertText(0), "")
+    expectEqual("one alert is singular", WeatherFormat_alertText(1), "1 alert")
+    expectEqual("several alerts are plural", WeatherFormat_alertText(3), "3 alerts")
+
     print "checks=" + m.checks.toStr() + " failures=" + m.failures.toStr()
 end sub
 

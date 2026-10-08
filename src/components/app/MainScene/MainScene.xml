@@ -3,9 +3,12 @@
     <interface>
         <field id="launchArgs" type="assocarray" />
         <field id="navigateToPage" type="assocarray" alwaysNotify="true" onChange="onNavigateToPage" />
+        <function name="showToast" />
     </interface>
     <script type="text/brightscript" uri="MainScene.bs" />
     <children>
         <Rectangle id="background" color="0x0B3C5DFF" width="1280" height="720" />
+        <Label id="toast" translation="[40,660]" width="600" visible="false" />
+        <Timer id="toastTimer" duration="2" repeat="false" />
     </children>
 </component>

@@ -3,6 +3,9 @@ import "pkg:/source/architecture/Logger.bs"
 
 function init() as void
     m.pageStack = []
+    m.toast = m.top.findNode("toast")
+    m.toastTimer = m.top.findNode("toastTimer")
+    m.toastTimer.observeFieldScoped("fire", "onToastTimer")
     m.httpGateway = createObject("roSGNode", "HttpGateway")
     m.global.addFields({ httpGateway: m.httpGateway })
     m.weatherManager = createObject("roSGNode", "WeatherManager")
@@ -68,4 +71,14 @@ function onKeyEvent(key as string, press as boolean) as boolean
         return true
     end if
     return false
+end function
+
+function showToast(message as object) as void
+    m.toast.text = message.text
+    m.toast.visible = true
+    m.toastTimer.control = "start"
+end function
+
+function onToastTimer() as void
+    m.toast.visible = false
 end function

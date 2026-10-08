@@ -18,6 +18,7 @@ function requestWeather() as void
     config = m.global.config
     m.global.httpGateway.callFunc("submit", {
         id: "weather",
+        kind: "weather",
         url: config.apiBaseUrl + "/stations/" + config.stationId + "/weather/current"
     })
 end function
@@ -37,6 +38,8 @@ function onHttpResponse(event as object) as void
     m.global.weatherConditions = {
         temperatureF: Int(json.tempF),
         summary: stringOrDefault(json.summary, ""),
-        updatedAt: json.updatedAt
+        updatedAt: json.updatedAt,
+        tempF: json.tempF,
+        alerts: json.alerts
     }
 end function

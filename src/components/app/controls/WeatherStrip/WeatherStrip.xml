@@ -2,9 +2,14 @@
 <component name="WeatherStrip" extends="ControlBase">
     <interface>
         <field id="conditions" type="assocarray" onChange="onConditionsChanged" />
+        <field id="temperature" type="integer" onChange="onTemperatureChanged" />
+        <field id="alerts" type="assocarray" onChange="onAlertsChanged" />
+        <field id="lastUpdated" type="string" onChange="onLastUpdatedChanged" />
     </interface>
     <script type="text/brightscript" uri="WeatherStrip.bs" />
     <children>
         <Label id="label" width="600" height="40" font="font:SmallBoldSystemFont" text="Weather unavailable" />
+        <Label id="alertBadge" translation="[620,0]" width="300" height="40" font="font:SmallSystemFont" visible="false" />
+        <Label id="fresh" translation="[920,0]" width="300" height="40" font="font:SmallSystemFont" visible="false" text="updated just now" />
     </children>
 </component>

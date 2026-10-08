@@ -1,0 +1,12 @@
+namespace WeatherFormat
+    ' Badge text for the number of active weather alerts; empty when there are none.
+    function alertText(count as integer) as string
+        if count <= 0
+            return ""
+        end if
+        if count = 1
+            return "1 alert"
+        end if
+        return count.toStr() + " alerts"
+    end function
+end namespace
