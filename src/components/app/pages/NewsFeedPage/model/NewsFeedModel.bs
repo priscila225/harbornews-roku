@@ -1,12 +1,15 @@
+import "pkg:/source/app/RelativeTime.bs"
+
 namespace NewsFeedModel
     ' Builds the ContentNode tree the list renders from the article payload.
-    function toContent(articles as object) as object
+    function toContent(articles as object, now as integer) as object
         root = createObject("roSGNode", "ContentNode")
         for each article in articles
             node = createObject("roSGNode", "ContentNode")
             node.id = article.id
             node.title = article.title
             node.description = article.summary
+            node.addFields({ publishedAgo: RelativeTime.format(article.publishedAt, now) })
             root.appendChild(node)
         end for
         return root

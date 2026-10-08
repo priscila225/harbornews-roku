@@ -14,7 +14,8 @@ function init() as void
 end function
 
 function onItemsChanged(event as object) as void
-    m.list.content = NewsFeedModel.toContent(event.getData())
+    now = createObject("roDateTime").asSeconds()
+    m.list.content = NewsFeedModel.toContent(event.getData(), now)
     m.list.setFocus(true)
 end function
 

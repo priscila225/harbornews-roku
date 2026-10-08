@@ -1,6 +1,7 @@
 function init() as void
     m.titleLabel = m.top.findNode("title")
     m.summaryLabel = m.top.findNode("summary")
+    m.publishedLabel = m.top.findNode("published")
 end function
 
 function onContentChanged() as void
@@ -10,4 +11,5 @@ function onContentChanged() as void
     end if
     m.titleLabel.text = content.title
     m.summaryLabel.text = content.description
+    m.publishedLabel.text = content.publishedAgo
 end function
